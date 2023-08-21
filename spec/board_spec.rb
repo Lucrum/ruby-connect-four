@@ -55,4 +55,34 @@ describe Board do
       end
     end
   end
+
+  describe '#victory_row?' do
+    winning_game_row = [[nil, 'O', 'O', 'O', 'O', nil, nil],
+                        [nil, nil, 'X', 'X', 'O', nil, nil],
+                        [nil, nil, 'X', nil, nil, nil, nil],
+                        [nil, nil, 'X', nil, nil, nil, nil],
+                        [nil, nil, nil, nil, nil, nil, nil],
+                        [nil, nil, nil, nil, nil, nil, nil]]
+    subject(:board_victory_row) { described_class.new(winning_game_row) }
+    context 'when there are four pieces in a row' do
+      it 'declares a victory for that player' do
+        expect(board_victory_row.victory_row?).to eq('O')
+      end
+    end
+  end
+
+  describe '#victory_column?' do
+    winning_game_column = [[nil, nil, 'O', 'O', 'O', nil, nil],
+                           [nil, nil, 'X', 'X', 'O', nil, nil],
+                           [nil, nil, 'X', nil, nil, nil, nil],
+                           [nil, nil, 'X', nil, nil, nil, nil],
+                           [nil, nil, 'X', nil, nil, nil, nil],
+                           [nil, nil, nil, nil, nil, nil, nil]]
+    subject(:board_victory_column) { described_class.new(winning_game_column) }
+    context 'when there are four pieces in a column' do
+      it 'declares a victory for that player' do
+        expect(board_victory_column.victory_column?).to eq('X')
+      end
+    end
+  end
 end
