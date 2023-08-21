@@ -2,10 +2,25 @@
 
 # main game class
 class ConnectFour
-  def initialize
-    @board = []
-    @player_one_token = nil
-    @player_two_token = nil
+  def initialize(player_one = nil, player_two = nil, board = Board.new)
+    @board = board
+    @player_one_token = player_one
+    @player_two_token = player_two
+  end
+
+  def game_loop
+    loop do
+
+      break if @board.victory?
+    end
+  end
+
+  def player_turn(player, player_symbol)
+    loop do
+      puts "Player #{player}, your move: "
+      user_input = gets.chomp.to_i
+      break if @board.play_move(user_input, player_symbol)
+    end
   end
 
   def player_tokens

@@ -1,10 +1,54 @@
 # frozen_string_literal: true
 
 require_relative '../lib/connect_four'
+require_relative '../lib/board'
 
 # rubocop: disable Metrics/BlockLength
 
 describe ConnectFour do
+  describe '#game_loop' do
+    # scripting method, not necessary to test
+  end
+
+  describe '#victory?' do
+    context 'it asks the board' do
+      let(:victory_board) { instance_double(Board) }
+      subject(:game_victory) { described_class.new('X', 'Y', victory_board) }
+
+      before do
+        allow(victory_board).to receive(:victory?).and_return('X')
+      end
+
+      it 'asks the board for the winner' do
+        expect(victory_board).to receive(:victory?)
+        game_victory.game_loop
+      end
+    end
+  end
+
+  describe '#player_turn' do
+    let(:board) { instance_double(Board) }
+    subject(:game_input) { described_class.new('X', 'Y', board) }
+
+    context "it is player 1's turn" do
+      before do
+        valid_column = 4
+        player_symbol = 'X'
+        allow(board).to receive(:play_move).with(valid_column, player_symbol).and_return(true)
+        allow(game_input).to receive(:gets).and_return(valid_column.to_s)
+      end
+
+      it 'plays the move' do
+        player = 1
+        player_symbol = 'X'
+        turn_request = "Player #{player}, your move: "
+        expect(game_input).to receive(:puts).with(turn_request)
+        expect(board).to receive(:play_move)
+        game_input.player_turn(player, player_symbol)
+      end
+    end
+  end
+
   describe '#player_tokens' do
     subject(:game_tokens) { described_class.new }
 
