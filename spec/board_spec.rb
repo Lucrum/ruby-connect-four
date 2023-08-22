@@ -66,7 +66,14 @@ describe Board do
     subject(:board_victory_row) { described_class.new(winning_game_row) }
     context 'when there are four pieces in a row' do
       it 'declares a victory for that player' do
-        expect(board_victory_row.victory_row?).to eq('O')
+        expect(board_victory_row.victory_row?(0)).to eq('O')
+      end
+    end
+
+    subject(:board_no_victory) { described_class.new }
+    context 'when there are no winning pieces' do
+      it 'does not declare a victory on the row' do
+        expect(board_no_victory.victory_row?(5)).to be nil
       end
     end
   end
@@ -81,8 +88,47 @@ describe Board do
     subject(:board_victory_column) { described_class.new(winning_game_column) }
     context 'when there are four pieces in a column' do
       it 'declares a victory for that player' do
-        expect(board_victory_column.victory_column?).to eq('X')
+        expect(board_victory_column.victory_column?(2)).to eq('X')
       end
     end
   end
+
+  describe '#victory_diagonal?' do
+    context 'when there is a winning diagonal' do
+      winning_game_diagonal = [['X', 'X', 'O', 'O', 'O', nil, nil],
+                               ['X', 'O', 'X', 'X', 'O', nil, nil],
+                               ['O', 'O', 'X', nil, nil, nil, nil],
+                               ['O', 'X', 'X', nil, nil, nil, nil],
+                               ['X', nil, 'O', nil, nil, nil, nil],
+                               [nil, nil, nil, nil, nil, nil, nil]]
+      subject(:board_victory_diagonal) { described_class.new(winning_game_diagonal) }
+      it 'declares the winner when the diagonal crosses down' do
+        expect(board_victory_diagonal.victory_diagonal?(2, 2)).to eq('X')
+      end
+
+      winning_game_diagonal_down = [['X', 'O', 'O', 'X', 'O', nil, nil],
+                                    ['X', 'O', 'O', 'X', 'O', nil, nil],
+                                    ['O', 'O', 'X', 'O', 'X', nil, nil],
+                                    ['O', nil, 'X', nil, 'O', nil, nil],
+                                    [nil, nil, 'O', nil, nil, nil, nil],
+                                    [nil, nil, nil, nil, nil, nil, nil]]
+      subject(:board_victory_diagonal_down) { described_class.new(winning_game_diagonal_down) }
+      it 'declares the winner when the diagonal crosses up' do
+        expect(board_victory_diagonal_down.victory_diagonal?(3, 2)).to eq('O')
+      end
+
+      it 'does not declare the winner on a different diagonal' do
+        expect(board_victory_diagonal_down.victory_diagonal?(2, 3)).to be nil
+      end
+    end
+
+    context 'when there is no winning diagonal' do
+      subject(:board_no_victory) { described_class.new }
+      it 'returns nil' do
+        expect(board_no_victory.victory_diagonal?(4, 2)).to be nil
+      end
+    end
+  end  
 end
+
+# rubocop: enable Metrics/BlockLength
