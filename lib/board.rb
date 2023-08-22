@@ -26,6 +26,17 @@ class Board
     @state[5][move].nil?
   end
 
+  def victory?(column, row)
+    row_victor = victory_row?(row)
+    return row_victor if row_victor
+
+    column_victor = victory_column?(column)
+    return column_victor if column_victor
+
+    diagonal_victor = victory_diagonal?(column, row)
+    return diagonal_victor if diagonal_victor
+  end
+
   def victory_row?(row)
     array_cons(@state[row])
   end
