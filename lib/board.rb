@@ -77,7 +77,6 @@ class Board
       temp_x -= 1
       temp_y += 1
     end
-    p res
     res
   end
 
@@ -103,7 +102,6 @@ class Board
       temp_x += 1
       temp_y += 1
     end
-    p res
     res
   end
   # rubocop: enable Metrics/MethodLength
