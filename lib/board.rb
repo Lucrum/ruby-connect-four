@@ -2,8 +2,8 @@
 
 # board for connect four
 class Board
-  def initialize(state = [[nil] * 7] * 6)
-    @state = state
+  def initialize(initial_state = Array.new(6) { Array.new(7) })
+    @state = initial_state
   end
 
   def play_move(column, player_symbol)
@@ -11,11 +11,10 @@ class Board
     while row < @state.length
       if @state[row][column].nil?
         @state[row][column] = player_symbol
-        break
+        return [column, row]
       end
       row += 1
     end
-    [column, row]
   end
 
   def valid_move?(move)
@@ -23,7 +22,7 @@ class Board
     return false if move.negative? || move > 6
 
     # column full
-    @state[5][move].nil?
+    @state[@state.length - 1][move].nil?
   end
 
   def victory?(column, row)
@@ -50,6 +49,17 @@ class Board
     return diag_left if diag_left
 
     array_cons(generate_right_diagonal(column, row))
+  end
+
+  def pretty_print
+    @state.reverse.each do |row|
+      row.each_with_index do |elem, index|
+        output = elem.nil? ? ' ' : elem
+        print output
+        print '|' unless index == row.length - 1
+      end
+      print "\n-+-+-+-+-+-+-\n"
+    end
   end
 
   private
