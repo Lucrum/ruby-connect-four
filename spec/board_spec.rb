@@ -33,9 +33,16 @@ describe Board do
 
     context 'when the board is empty' do
       it 'plays a valid move' do
-        new_state = [nil, nil, nil, nil, nil, nil, 'X']
+        new_state = [[nil, nil, nil, nil, nil, nil, 'X'],
+                     [nil, nil, nil, nil, nil, nil, nil],
+                     [nil, nil, nil, nil, nil, nil, nil],
+                     [nil, nil, nil, nil, nil, nil, nil],
+                     [nil, nil, nil, nil, nil, nil, nil],
+                     [nil, nil, nil, nil, nil, nil, nil]]
         old_board = board_play.instance_variable_get(:@state)
-        expect { board_play.play_move(6, 'X') }.to change { old_board[0] }.to(new_state)
+        return_coords = nil
+        expect { return_coords = board_play.play_move(6, 'X') }.to change { old_board }.to(new_state)
+        expect(return_coords).to eq([6, 0])
       end
     end
 
@@ -72,14 +79,14 @@ describe Board do
 
     subject(:board_no_victory) { described_class.new }
     context 'when there are no winning pieces' do
-      it 'does not declare a victory on the row' do
+      it 'returns nil' do
         expect(board_no_victory.victory_row?(5)).to be nil
       end
     end
   end
 
   describe '#victory_column?' do
-    winning_game_column = [[nil, nil, 'O', 'O', 'O', nil, nil],
+    winning_game_column = [[nil, nil, 'O', 'O', 'O', 'X', nil],
                            [nil, nil, 'X', 'X', 'O', nil, nil],
                            [nil, nil, 'X', nil, nil, nil, nil],
                            [nil, nil, 'X', nil, nil, nil, nil],
@@ -89,6 +96,20 @@ describe Board do
     context 'when there are four pieces in a column' do
       it 'declares a victory for that player' do
         expect(board_victory_column.victory_column?(2)).to eq('X')
+      end
+    end
+
+    losing_game_column = [[nil, nil, nil, 'X', nil, nil, nil],
+                          [nil, nil, nil, nil, nil, nil, nil],
+                          [nil, nil, nil, nil, nil, nil, nil],
+                          [nil, nil, nil, nil, nil, nil, nil],
+                          [nil, nil, nil, nil, nil, nil, nil],
+                          [nil, nil, nil, nil, nil, nil, nil]]
+    subject(:board_no_victory_column) { described_class.new(losing_game_column) }
+
+    context 'when there are not four pieces in a column' do
+      it 'returns nil' do
+        expect(board_no_victory_column.victory_column?(3)).to be nil
       end
     end
   end
@@ -128,7 +149,7 @@ describe Board do
         expect(board_no_victory.victory_diagonal?(4, 2)).to be nil
       end
     end
-  end  
+  end
 end
 
 # rubocop: enable Metrics/BlockLength
