@@ -19,14 +19,20 @@ class ConnectFour
   end
 
   def game_loop
-    loop do
+    victor = nil
+    until victor
       curr_player = @player ? ['two', @player_two_token] : ['one', @player_one_token]
       @player = !@player
       @board.pretty_print
       response = player_turn(curr_player[0], curr_player[1])
-      break if @board.victory?(response[0], response[1])
+      victor = @board.victory?(response[0], response[1])
     end
-    print 'exiting'
+    @board.pretty_print
+    game_end(victor)
+  end
+
+  def game_end(victor)
+    puts "#{victor} has connected 4!"
   end
 
   def player_turn(player, player_symbol)
