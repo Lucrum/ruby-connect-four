@@ -16,3 +16,5 @@ Each player must input their choice of piece before the game begins. Any single 
 To play, simply clone the repository and run `ruby lib/connect_four.rb` in the root folder.
 
 Alternatively, the easiest way to play would be to play it on Repl.it. Simply click the badge below and run.
+
+[![Run on Repl.it](https://replit.com/badge/github/Lucrum/ruby-connect-four)](https://replit.com/new/github/Lucrum/ruby-connect-four)
