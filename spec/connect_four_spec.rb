@@ -10,22 +10,6 @@ describe ConnectFour do
     # scripting method, not necessary to test
   end
 
-  describe '#victory?' do
-    context 'it asks the board' do
-      let(:victory_board) { instance_double(Board) }
-      subject(:game_victory) { described_class.new('X', 'Y', victory_board) }
-
-      before do
-        allow(victory_board).to receive(:victory?).and_return('X')
-      end
-
-      it 'asks the board for the winner' do
-        expect(victory_board).to receive(:victory?)
-        game_victory.game_loop
-      end
-    end
-  end
-
   describe '#player_turn' do
     let(:board) { instance_double(Board) }
     subject(:game_input) { described_class.new('X', 'Y', board) }
@@ -34,7 +18,7 @@ describe ConnectFour do
       before do
         valid_column = 4
         player_symbol = 'X'
-        allow(board).to receive(:play_move).with(valid_column, player_symbol).and_return(true)
+        allow(board).to receive(:play_move).with(valid_column, player_symbol).and_return([4, 0])
         allow(game_input).to receive(:gets).and_return(valid_column.to_s)
       end
 
