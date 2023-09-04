@@ -1,6 +1,6 @@
 # ruby-connect-four
 
-This project is from The Odin Project's Ruby [cirriculum](https://www.theodinproject.com/lessons/ruby-connect-four).
+This project is from The Odin Project's Ruby [curriculum](https://www.theodinproject.com/lessons/ruby-connect-four).
 
 
 A console based Ruby game of Connect 4 using Test Driven Development.
